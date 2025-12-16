@@ -7,7 +7,7 @@
 <style>
   body {
     font-family: 'Arial', sans-serif;
-    background: #fce4ec; /* 甜美馬卡龍粉色系 */
+    background: #fce4ec;
     display: flex;
     justify-content: center;
     align-items: flex-start;
@@ -20,15 +20,35 @@
     gap: 40px;
   }
 
+  /* 左側資訊欄 */
+  .info {
+    width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .info h3 {
+    margin: 0;
+    font-size: 20px;
+    color: #880e4f;
+  }
+
+  .info p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  /* 卡牌區 */
   .cards {
     display: grid;
-    grid-template-columns: repeat(3, 120px);
+    grid-template-columns: repeat(2, 160px);
     gap: 20px;
   }
 
   .card {
-    width: 120px;
-    height: 160px;
+    width: 160px;
+    height: 220px;
     perspective: 1000px;
     cursor: pointer;
     position: relative;
@@ -43,7 +63,7 @@
   }
 
   .card.flipped .card-inner {
-    transform: rotateY(180deg) scale(1.3) translateX(-60px);
+    transform: rotateY(180deg) scale(1.3) translateX(-80px);
     z-index: 10;
   }
 
@@ -53,45 +73,23 @@
     height: 100%;
     border-radius: 12px;
     backface-visibility: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
+    overflow: hidden;
   }
 
-  .card-front {
-    background: #80deea;
+  /* 卡牌正面照片示意 */
+  .card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
+  /* 卡牌背面可加簡單背景或顏色 */
   .card-back {
     background: #f48fb1;
     transform: rotateY(180deg);
-    flex-direction: column;
-    text-align: center;
-    padding: 10px;
-    box-sizing: border-box;
   }
 
-  .info {
-    width: 200px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
-
-  .info h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #880e4f;
-  }
-
-  .info p {
-    margin: 0;
-    font-size: 14px;
-  }
-
+  /* 愛心特效 */
   .heart {
     position: absolute;
     font-size: 30px;
@@ -111,26 +109,50 @@
 <body>
 
 <div class="container">
+  <div class="info" id="sideInfo">
+    <h3>點選卡牌查看資訊</h3>
+  </div>
+
   <div class="cards">
-    <div class="card" data-name="Soren" data-birthday="01/01" data-group="DreamTeam" data-nickname="Prince" data-fan="Eurians" data-likes="Guitar, Music">
+    <!-- 鄭友榮 -->
+    <div class="card" data-name="鄭友榮" data-birthday="01/01" data-group="Ateez" data-nickname="Yoo" data-fan="ATINY" data-likes="吉他, 遊戲">
       <div class="card-inner">
-        <div class="card-front">S</div>
-        <div class="card-back">
-          <h3>Soren</h3>
-          <p>生日: 01/01</p>
-          <p>團名: DreamTeam</p>
-          <p>綽號: Prince</p>
-          <p>粉絲愛稱: Eurians</p>
-          <p>喜歡: Guitar, Music</p>
+        <div class="card-front">
+          <img src="https://via.placeholder.com/160x220.png?text=%E9%84%AD%E5%8F%8B%E6%A6%AE" alt="鄭友榮">
         </div>
+        <div class="card-back"></div>
       </div>
     </div>
 
-    <!-- 你可以再複製這個 card 區塊加入更多偶像 -->
-  </div>
+    <!-- 崔傘 -->
+    <div class="card" data-name="崔傘" data-birthday="02/02" data-group="Ateez" data-nickname="San" data-fan="ATINY" data-likes="舞蹈, 食物">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="https://via.placeholder.com/160x220.png?text=%E5%B4%94%E5%82%98" alt="崔傘">
+        </div>
+        <div class="card-back"></div>
+      </div>
+    </div>
 
-  <div class="info" id="sideInfo">
-    <h3>點選卡牌查看資訊</h3>
+    <!-- 趙雨凡 -->
+    <div class="card" data-name="趙雨凡" data-birthday="03/03" data-group="Ateez" data-nickname="Rain" data-fan="ATINY" data-likes="唱歌, 遊戲">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="https://via.placeholder.com/160x220.png?text=%E8%B6%99%E9%9B%A8%E5%87%A1" alt="趙雨凡">
+        </div>
+        <div class="card-back"></div>
+      </div>
+    </div>
+
+    <!-- 馬丁 -->
+    <div class="card" data-name="馬丁" data-birthday="04/04" data-group="Stray Kids" data-nickname="Martin" data-fan="STAY" data-likes="音樂, 跳舞">
+      <div class="card-inner">
+        <div class="card-front">
+          <img src="https://via.placeholder.com/160x220.png?text=%E9%A6%AC%E4%B8%81" alt="馬丁">
+        </div>
+        <div class="card-back"></div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -146,7 +168,7 @@ cards.forEach(card => {
     // 翻牌
     card.classList.toggle('flipped');
 
-    // 更新右側資料欄
+    // 更新左側資料欄
     if(card.classList.contains('flipped')){
       sideInfo.innerHTML = `
         <h3>${card.dataset.name}</h3>
@@ -171,4 +193,3 @@ cards.forEach(card => {
 
 </body>
 </html>
-
