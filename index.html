@@ -3,193 +3,241 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>互動式偶像翻牌</title>
+<title>夢幻偶像翻牌互動</title>
 <style>
-  body {
-    font-family: 'Arial', sans-serif;
-    background: #fce4ec;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px;
-    min-height: 100vh;
-  }
+body {
+  margin:0;
+  font-family: 'Arial', sans-serif;
+  min-height: 100vh;
+  overflow: hidden;
+  position: relative;
+  background: linear-gradient(135deg,#ffc1e3,#a0e7ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .container {
-    display: flex;
-    gap: 40px;
-  }
+/* 背景白色愛心 */
+.heart-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+}
+.heart-bg .heart {
+  position: absolute;
+  color: rgba(255,255,255,0.7);
+  font-size: 10px;
+  animation: float 10s linear infinite;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) scale(1); opacity: 0.8; }
+  100% { transform: translateY(-50px) scale(1); opacity: 0; }
+}
 
-  /* 左側資訊欄 */
-  .info {
-    width: 220px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-  }
+/* 四張卡牌容器 */
+.cards-container {
+  display: flex;
+  gap: 20px;
+  z-index: 1;
+  transition: all 0.6s;
+}
 
-  .info h3 {
-    margin: 0;
-    font-size: 20px;
-    color: #880e4f;
-  }
+/* 卡牌 */
+.card {
+  width: 160px;
+  height: 220px;
+  perspective: 1000px;
+  cursor: pointer;
+  position: relative;
+}
+.card-inner {
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  position: absolute;
+}
+.card.flipped .card-inner {
+  transform: rotateY(180deg);
+}
 
-  .info p {
-    margin: 0;
-    font-size: 14px;
-  }
+/* 卡牌正面 */
+.card-front img {
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  border-radius:12px;
+}
 
-  /* 卡牌區 */
-  .cards {
-    display: grid;
-    grid-template-columns: repeat(2, 160px);
-    gap: 20px;
-  }
+/* 卡牌背面 */
+.card-back {
+  width:100%;
+  height:100%;
+  background:#fff;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-radius:12px;
+  font-weight:bold;
+  font-size:20px;
+  backface-visibility:hidden;
+  transform: rotateY(180deg);
+}
 
-  .card {
-    width: 160px;
-    height: 220px;
-    perspective: 1000px;
-    cursor: pointer;
-    position: relative;
-  }
+/* 放大卡牌 */
+.card.enlarged {
+  position: fixed;
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%) scale(2.5);
+  z-index: 100;
+  transition: transform 0.8s;
+}
 
-  .card-inner {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
+/* 消失的其他卡牌 */
+.card.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s;
+}
 
-  .card.flipped .card-inner {
-    transform: rotateY(180deg) scale(1.3) translateX(-80px);
-    z-index: 10;
-  }
+/* 左右資訊欄 */
+.info-panel {
+  position: fixed;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
+  width: 220px;
+  background: rgba(255,255,255,0.7);
+  padding: 15px;
+  border-radius: 12px;
+  display: none;
+  z-index: 50;
+}
+.info-panel h3 { margin:0; color:#880e4f; }
+.info-panel p { margin:3px 0; font-size:14px; }
 
-  .card-front, .card-back {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 12px;
-    backface-visibility: hidden;
-    overflow: hidden;
-  }
-
-  /* 卡牌正面照片示意 */
-  .card-front img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* 卡牌背面可加簡單背景或顏色 */
-  .card-back {
-    background: #f48fb1;
-    transform: rotateY(180deg);
-  }
-
-  /* 愛心特效 */
-  .heart {
-    position: absolute;
-    font-size: 30px;
-    color: #ff1744;
-    opacity: 0;
-    pointer-events: none;
-    animation: pop 0.8s forwards;
-  }
-
-  @keyframes pop {
-    0% { transform: scale(0.5); opacity: 1; }
-    50% { transform: scale(1.5) translateY(-20px); opacity: 1; }
-    100% { transform: scale(1) translateY(-40px); opacity: 0; }
-  }
+/* 愛心特效 */
+.flying-heart {
+  position: absolute;
+  font-size: 20px;
+  color:#ff69b4;
+  animation: flyup 2s forwards;
+}
+@keyframes flyup {
+  0% { transform: translateY(0) scale(1); opacity:1;}
+  50% { transform: translateY(-80px) scale(1.5); opacity:1;}
+  100% { transform: translateY(-150px) scale(1); opacity:0;}
+}
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="info" id="sideInfo">
-    <h3>點選卡牌查看資訊</h3>
+<div class="heart-bg" id="heartBg"></div>
+
+<div class="cards-container" id="cardsContainer">
+  <!-- 鄭友榮 -->
+  <div class="card" data-name="鄭友榮" data-birthday="01/01" data-group="Ateez" data-nickname="Yoo" data-fan="ATINY" data-likes="吉他, 遊戲">
+    <div class="card-inner">
+      <div class="card-front"><img src="https://via.placeholder.com/160x220.png?text=%E9%84%AD%E5%8F%8B%E6%A6%AE"></div>
+      <div class="card-back">Ateez LOGO</div>
+    </div>
   </div>
 
-  <div class="cards">
-    <!-- 鄭友榮 -->
-    <div class="card" data-name="鄭友榮" data-birthday="01/01" data-group="Ateez" data-nickname="Yoo" data-fan="ATINY" data-likes="吉他, 遊戲">
-      <div class="card-inner">
-        <div class="card-front">
-          <img src="https://via.placeholder.com/160x220.png?text=%E9%84%AD%E5%8F%8B%E6%A6%AE" alt="鄭友榮">
-        </div>
-        <div class="card-back"></div>
-      </div>
+  <!-- 馬丁 -->
+  <div class="card" data-name="馬丁" data-birthday="04/04" data-group="Stray Kids" data-nickname="Martin" data-fan="STAY" data-likes="音樂, 跳舞">
+    <div class="card-inner">
+      <div class="card-front"><img src="https://via.placeholder.com/160x220.png?text=%E9%A6%AC%E4%B8%81"></div>
+      <div class="card-back">Stray Kids LOGO</div>
     </div>
+  </div>
 
-    <!-- 崔傘 -->
-    <div class="card" data-name="崔傘" data-birthday="02/02" data-group="Ateez" data-nickname="San" data-fan="ATINY" data-likes="舞蹈, 食物">
-      <div class="card-inner">
-        <div class="card-front">
-          <img src="https://via.placeholder.com/160x220.png?text=%E5%B4%94%E5%82%98" alt="崔傘">
-        </div>
-        <div class="card-back"></div>
-      </div>
+  <!-- 崔傘 -->
+  <div class="card" data-name="崔傘" data-birthday="02/02" data-group="Ateez" data-nickname="San" data-fan="ATINY" data-likes="舞蹈, 食物">
+    <div class="card-inner">
+      <div class="card-front"><img src="https://via.placeholder.com/160x220.png?text=%E5%B4%94%E5%82%98"></div>
+      <div class="card-back">Ateez LOGO</div>
     </div>
+  </div>
 
-    <!-- 趙雨凡 -->
-    <div class="card" data-name="趙雨凡" data-birthday="03/03" data-group="Ateez" data-nickname="Rain" data-fan="ATINY" data-likes="唱歌, 遊戲">
-      <div class="card-inner">
-        <div class="card-front">
-          <img src="https://via.placeholder.com/160x220.png?text=%E8%B6%99%E9%9B%A8%E5%87%A1" alt="趙雨凡">
-        </div>
-        <div class="card-back"></div>
-      </div>
-    </div>
-
-    <!-- 馬丁 -->
-    <div class="card" data-name="馬丁" data-birthday="04/04" data-group="Stray Kids" data-nickname="Martin" data-fan="STAY" data-likes="音樂, 跳舞">
-      <div class="card-inner">
-        <div class="card-front">
-          <img src="https://via.placeholder.com/160x220.png?text=%E9%A6%AC%E4%B8%81" alt="馬丁">
-        </div>
-        <div class="card-back"></div>
-      </div>
+  <!-- 趙雨凡 -->
+  <div class="card" data-name="趙雨凡" data-birthday="03/03" data-group="Ateez" data-nickname="Rain" data-fan="ATINY" data-likes="唱歌, 遊戲">
+    <div class="card-inner">
+      <div class="card-front"><img src="https://via.placeholder.com/160x220.png?text=%E8%B6%99%E9%9B%A8%E5%87%A1"></div>
+      <div class="card-back">Ateez LOGO</div>
     </div>
   </div>
 </div>
 
+<div class="info-panel" id="infoPanel"></div>
+
 <script>
-const cards = document.querySelectorAll('.card');
-const sideInfo = document.getElementById('sideInfo');
+// 背景白色愛心
+const heartBg = document.getElementById('heartBg');
+for(let i=0;i<50;i++){
+  const heart=document.createElement('div');
+  heart.className='heart';
+  heart.textContent='♥';
+  heart.style.left=Math.random()*100+'vw';
+  heart.style.top=Math.random()*100+'vh';
+  heart.style.fontSize=(5+Math.random()*15)+'px';
+  heartBg.appendChild(heart);
+}
 
-cards.forEach(card => {
-  card.addEventListener('click', () => {
-    // 先重置其他卡牌
-    cards.forEach(c => c !== card && c.classList.remove('flipped'));
+// 卡牌互動
+const cards=document.querySelectorAll('.card');
+const infoPanel=document.getElementById('infoPanel');
+const container=document.getElementById('cardsContainer');
+let enlarged=false;
 
-    // 翻牌
-    card.classList.toggle('flipped');
-
-    // 更新左側資料欄
-    if(card.classList.contains('flipped')){
-      sideInfo.innerHTML = `
-        <h3>${card.dataset.name}</h3>
-        <p>生日: ${card.dataset.birthday}</p>
-        <p>團名: ${card.dataset.group}</p>
-        <p>綽號: ${card.dataset.nickname}</p>
-        <p>粉絲愛稱: ${card.dataset.fan}</p>
-        <p>喜歡: ${card.dataset.likes}</p>
-      `;
-      // 愛心特效
-      const heart = document.createElement('div');
-      heart.classList.add('heart');
-      heart.textContent = '💖';
-      card.appendChild(heart);
-      setTimeout(() => heart.remove(), 800);
-    } else {
-      sideInfo.innerHTML = `<h3>點選卡牌查看資訊</h3>`;
+cards.forEach(card=>{
+  card.addEventListener('click',(e)=>{
+    e.stopPropagation();
+    if(!enlarged){
+      enlarged=true;
+      // 放大點擊卡
+      card.classList.add('enlarged');
+      // 其他卡消失
+      cards.forEach(c=>{if(c!==card)c.classList.add('hidden');});
+      // 生成愛心動畫
+      for(let i=0;i<20;i++){
+        const h=document.createElement('div');
+        h.className='flying-heart';
+        h.style.left= (Math.random()*50 + 30) + 'px';
+        h.style.bottom='0px';
+        container.appendChild(h);
+        setTimeout(()=>h.remove(),2000);
+      }
+      // 延遲顯示右側資訊
+      setTimeout(()=>{
+        infoPanel.style.display='block';
+        infoPanel.innerHTML=`
+          <h3>${card.dataset.name}</h3>
+          <p>團名: ${card.dataset.group}</p>
+          <p>粉絲愛稱: ${card.dataset.fan}</p>
+          <p>生日: ${card.dataset.birthday}</p>
+          <p>喜歡: ${card.dataset.likes}</p>
+        `;
+      },2000);
     }
   });
+});
+
+// 點任意地方回到初始
+document.body.addEventListener('click',()=>{
+  if(enlarged){
+    enlarged=false;
+    infoPanel.style.display='none';
+    cards.forEach(c=>{
+      c.classList.remove('enlarged');
+      c.classList.remove('hidden');
+    });
+  }
 });
 </script>
 
 </body>
 </html>
+
