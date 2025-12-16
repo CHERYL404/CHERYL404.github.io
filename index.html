@@ -17,7 +17,7 @@ body {
   align-items: center;
 }
 
-/* 背景白色愛心更大 */
+/* 背景白色愛心 */
 .heart-bg {
   position: absolute;
   width: 100%;
@@ -74,6 +74,7 @@ body {
   align-items:center;
   font-size:16px;
   color:#888;
+  backface-visibility: hidden;
 }
 
 /* 卡牌背面 - 白色空白，可自行放LOGO */
@@ -87,7 +88,7 @@ body {
   align-items:center;
   font-size:16px;
   color:#888;
-  backface-visibility:hidden;
+  backface-visibility: hidden;
   transform: rotateY(180deg);
 }
 
@@ -95,7 +96,7 @@ body {
 .card.enlarged {
   position: fixed;
   top:50%;
-  left:50%;
+  left:calc(50% - 100px);
   transform: translate(-50%,-50%) scale(2.5);
   z-index: 100;
   transition: transform 0.8s;
@@ -108,26 +109,17 @@ body {
   transition: opacity 0.6s;
 }
 
-/* 左右資訊欄 */
+/* 右側文字介紹 */
 .info-panel {
   position: fixed;
   top:50%;
+  left:calc(50% + 180px); /* 卡牌右側 */
   transform: translateY(-50%);
-  width:220px;
-  background: rgba(255,255,255,0.7);
-  padding: 15px;
-  border-radius:12px;
+  font-size: 28px;
+  color: #880e4f;
   display:none;
   z-index:50;
 }
-.info-panel.left {
-  left: calc(50% - 180px - 10px);
-}
-.info-panel.right {
-  left: calc(50% + 180px + 10px);
-}
-.info-panel h3 { margin:0; color:#880e4f; }
-.info-panel p { margin:3px 0; font-size:14px; }
 
 /* 愛心特效 */
 .flying-heart {
@@ -149,7 +141,7 @@ body {
 
 <div class="cards-container" id="cardsContainer">
   <!-- 鄭友榮 -->
-  <div class="card" data-name="鄭友榮" data-birthday="01/01" data-group="Ateez" data-nickname="Yoo" data-fan="ATINY" data-likes="吉他, 遊戲">
+  <div class="card" data-name="鄭友榮" data-group="Ateez">
     <div class="card-inner">
       <div class="card-front">放圖片</div>
       <div class="card-back">放團LOGO</div>
@@ -157,7 +149,7 @@ body {
   </div>
 
   <!-- 馬丁 -->
-  <div class="card" data-name="馬丁" data-birthday="04/04" data-group="Stray Kids" data-nickname="Martin" data-fan="STAY" data-likes="音樂, 跳舞">
+  <div class="card" data-name="馬丁" data-group="Stray Kids">
     <div class="card-inner">
       <div class="card-front">放圖片</div>
       <div class="card-back">放團LOGO</div>
@@ -165,7 +157,7 @@ body {
   </div>
 
   <!-- 崔傘 -->
-  <div class="card" data-name="崔傘" data-birthday="02/02" data-group="Ateez" data-nickname="San" data-fan="ATINY" data-likes="舞蹈, 食物">
+  <div class="card" data-name="崔傘" data-group="Ateez">
     <div class="card-inner">
       <div class="card-front">放圖片</div>
       <div class="card-back">放團LOGO</div>
@@ -173,7 +165,7 @@ body {
   </div>
 
   <!-- 趙雨凡 -->
-  <div class="card" data-name="趙雨凡" data-birthday="03/03" data-group="Ateez" data-nickname="Rain" data-fan="ATINY" data-likes="唱歌, 遊戲">
+  <div class="card" data-name="趙雨凡" data-group="Ateez">
     <div class="card-inner">
       <div class="card-front">放圖片</div>
       <div class="card-back">放團LOGO</div>
@@ -181,8 +173,7 @@ body {
   </div>
 </div>
 
-<div class="info-panel left" id="infoLeft"></div>
-<div class="info-panel right" id="infoRight"></div>
+<div class="info-panel" id="infoRight"></div>
 
 <script>
 // 背景白色愛心
@@ -198,7 +189,6 @@ for(let i=0;i<30;i++){
 }
 
 const cards=document.querySelectorAll('.card');
-const infoLeft=document.getElementById('infoLeft');
 const infoRight=document.getElementById('infoRight');
 const container=document.getElementById('cardsContainer');
 let enlarged=false;
@@ -208,31 +198,28 @@ cards.forEach(card=>{
     e.stopPropagation();
     if(!enlarged){
       enlarged=true;
-      card.classList.add('enlarged');
-      cards.forEach(c=>{if(c!==card)c.classList.add('hidden');});
-      // 愛心動畫
-      for(let i=0;i<20;i++){
-        const h=document.createElement('div');
-        h.className='flying-heart';
-        h.style.left=(Math.random()*100 + container.offsetLeft)+'px';
-        h.style.bottom='0px';
-        container.appendChild(h);
-        setTimeout(()=>h.remove(),2000);
-      }
-      // 顯示左右資訊
+
+      // 翻牌
+      card.classList.add('flipped');
+
       setTimeout(()=>{
-        infoLeft.style.display='block';
+        // 放大卡牌
+        card.classList.add('enlarged');
+        // 隱藏其他卡牌
+        cards.forEach(c=>{if(c!==card)c.classList.add('hidden');});
+        // 飄愛心
+        for(let i=0;i<20;i++){
+          const h=document.createElement('div');
+          h.className='flying-heart';
+          h.style.left=(Math.random()*100 + container.offsetLeft)+'px';
+          h.style.bottom='0px';
+          container.appendChild(h);
+          setTimeout(()=>h.remove(),2000);
+        }
+        // 顯示右側文字介紹
         infoRight.style.display='block';
-        infoLeft.innerHTML=`
-          <h3>${card.dataset.name}</h3>
-          <p>團名: ${card.dataset.group}</p>
-        `;
-        infoRight.innerHTML=`
-          <p>粉絲愛稱: ${card.dataset.fan}</p>
-          <p>生日: ${card.dataset.birthday}</p>
-          <p>喜歡: ${card.dataset.likes}</p>
-        `;
-      },2000);
+        infoRight.innerHTML=`${card.dataset.name} | ${card.dataset.group}`;
+      },600); // 翻牌動畫完成後再放大
     }
   });
 });
@@ -241,11 +228,11 @@ cards.forEach(card=>{
 document.body.addEventListener('click',()=>{
   if(enlarged){
     enlarged=false;
-    infoLeft.style.display='none';
     infoRight.style.display='none';
     cards.forEach(c=>{
       c.classList.remove('enlarged');
       c.classList.remove('hidden');
+      c.classList.remove('flipped');
     });
   }
 });
@@ -253,4 +240,3 @@ document.body.addEventListener('click',()=>{
 
 </body>
 </html>
-
