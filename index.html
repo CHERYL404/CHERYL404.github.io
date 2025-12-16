@@ -1,164 +1,174 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <title>My Bias Cards</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #fce4ec, #e1bee7, #bbdefb);
-      font-family: 'Segoe UI', sans-serif;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>互動式偶像翻牌</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background: #fce4ec; /* 甜美馬卡龍粉色系 */
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px;
+    min-height: 100vh;
+  }
 
-    .card-container {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-      perspective: 1200px;
-    }
+  .container {
+    display: flex;
+    gap: 40px;
+  }
 
-    .card {
-      width: 180px;
-      height: 260px;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 0.8s ease, box-shadow 0.5s ease;
-      cursor: pointer;
-    }
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(3, 120px);
+    gap: 20px;
+  }
 
-    .card.active {
-      transform: rotateY(180deg) scale(1.25);
-      z-index: 10;
-      box-shadow: 0 25px 50px rgba(0,0,0,0.3);
-    }
+  .card {
+    width: 120px;
+    height: 160px;
+    perspective: 1000px;
+    cursor: pointer;
+    position: relative;
+  }
 
-    .card-face {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 16px;
-      backface-visibility: hidden;
-      overflow: hidden;
-    }
+  .card-inner {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+  }
 
-    /* 背面：歐式華麗風 */
-    .card-back {
-      background:
-        radial-gradient(circle at top, #fff8e1, transparent 60%),
-        linear-gradient(135deg, #d4af37, #f8e7b1, #bfa14a);
-      border: 4px solid #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 22px;
-      color: #7a5c00;
-    }
+  .card.flipped .card-inner {
+    transform: rotateY(180deg) scale(1.3) translateX(-60px);
+    z-index: 10;
+  }
 
-    .card-back::before {
-      content: "✦ ♡ ✦";
-      font-size: 28px;
-      color: rgba(255,255,255,0.8);
-    }
+  .card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 12px;
+    backface-visibility: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    color: #fff;
+  }
 
-    /* 正面 */
-    .card-front {
-      transform: rotateY(180deg);
-      background: #fff;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding: 12px;
-    }
+  .card-front {
+    background: #80deea;
+  }
 
-    .card-front img {
-      width: 100%;
-      height: 150px;
-      object-fit: cover;
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
+  .card-back {
+    background: #f48fb1;
+    transform: rotateY(180deg);
+    flex-direction: column;
+    text-align: center;
+    padding: 10px;
+    box-sizing: border-box;
+  }
 
-    .card-front h3 {
-      margin: 6px 0 4px;
-      font-size: 16px;
-      color: #e91e63;
-    }
+  .info {
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
 
-    .card-front p {
-      font-size: 13px;
-      color: #555;
-    }
+  .info h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #880e4f;
+  }
 
-    .sparkles {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        radial-gradient(#fff 1px, transparent 1px),
-        radial-gradient(#fff 1px, transparent 1px);
-      background-size: 40px 40px, 60px 60px;
-      background-position: 0 0, 20px 30px;
-      opacity: 0.4;
-    }
-  </style>
+  .info p {
+    margin: 0;
+    font-size: 14px;
+  }
+
+  .heart {
+    position: absolute;
+    font-size: 30px;
+    color: #ff1744;
+    opacity: 0;
+    pointer-events: none;
+    animation: pop 0.8s forwards;
+  }
+
+  @keyframes pop {
+    0% { transform: scale(0.5); opacity: 1; }
+    50% { transform: scale(1.5) translateY(-20px); opacity: 1; }
+    100% { transform: scale(1) translateY(-40px); opacity: 0; }
+  }
+</style>
 </head>
 <body>
-  <div class="sparkles"></div>
 
-  <div class="card-container">
-    <div class="card">
-      <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="https://via.placeholder.com/300x200" />
-        <h3>ATEEZ｜鄭友榮</h3>
-        <p>舞台魅力爆表的甜性感代表。</p>
+<div class="container">
+  <div class="cards">
+    <div class="card" data-name="Soren" data-birthday="01/01" data-group="DreamTeam" data-nickname="Prince" data-fan="Eurians" data-likes="Guitar, Music">
+      <div class="card-inner">
+        <div class="card-front">S</div>
+        <div class="card-back">
+          <h3>Soren</h3>
+          <p>生日: 01/01</p>
+          <p>團名: DreamTeam</p>
+          <p>綽號: Prince</p>
+          <p>粉絲愛稱: Eurians</p>
+          <p>喜歡: Guitar, Music</p>
+        </div>
       </div>
     </div>
 
-    <div class="card">
-      <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="https://via.placeholder.com/300x200" />
-        <h3>ATEEZ｜崔傘</h3>
-        <p>表情管理封神，氣場型本命。</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="https://via.placeholder.com/300x200" />
-        <h3>CORTIS｜馬丁</h3>
-        <p>低音魅力與溫柔並存的存在。</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-face card-back"></div>
-      <div class="card-face card-front">
-        <img src="https://via.placeholder.com/300x200" />
-        <h3>CORTIS｜趙雨凡</h3>
-        <p>甜感少年，舞台與日常反差王。</p>
-      </div>
-    </div>
+    <!-- 你可以再複製這個 card 區塊加入更多偶像 -->
   </div>
 
-  <script>
-    const cards = document.querySelectorAll('.card');
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        cards.forEach(c => {
-          if (c !== card) c.classList.remove('active');
-        });
-        card.classList.toggle('active');
-      });
-    });
-  </script>
+  <div class="info" id="sideInfo">
+    <h3>點選卡牌查看資訊</h3>
+  </div>
+</div>
+
+<script>
+const cards = document.querySelectorAll('.card');
+const sideInfo = document.getElementById('sideInfo');
+
+cards.forEach(card => {
+  card.addEventListener('click', () => {
+    // 先重置其他卡牌
+    cards.forEach(c => c !== card && c.classList.remove('flipped'));
+
+    // 翻牌
+    card.classList.toggle('flipped');
+
+    // 更新右側資料欄
+    if(card.classList.contains('flipped')){
+      sideInfo.innerHTML = `
+        <h3>${card.dataset.name}</h3>
+        <p>生日: ${card.dataset.birthday}</p>
+        <p>團名: ${card.dataset.group}</p>
+        <p>綽號: ${card.dataset.nickname}</p>
+        <p>粉絲愛稱: ${card.dataset.fan}</p>
+        <p>喜歡: ${card.dataset.likes}</p>
+      `;
+      // 愛心特效
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.textContent = '💖';
+      card.appendChild(heart);
+      setTimeout(() => heart.remove(), 800);
+    } else {
+      sideInfo.innerHTML = `<h3>點選卡牌查看資訊</h3>`;
+    }
+  });
+});
+</script>
+
 </body>
 </html>
+
