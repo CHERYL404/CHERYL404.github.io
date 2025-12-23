@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -34,27 +34,34 @@
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2;
             pointer-events: none;
-            opacity: 1; /* 調高不透明度讓色彩更鮮豔 */
+            opacity: 1;
         }
 
         .sticker {
             position: absolute;
             width: 280px;
-            /* 移除 grayscale，恢復原圖色調 */
             filter: drop-shadow(8px 8px 0px rgba(255,255,255,0.8));
             transition: opacity 0.5s;
         }
 
-        /* 設定每一張去背圖的位置 */
+        /* --- 原有的貼紙位置 (s1-p7) --- */
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
         .s2 { bottom: 5%; left: 10%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 5%; transform: rotate(18deg); }
         .s4 { bottom: 8%; right: 15%; transform: rotate(-10deg); }
-        
-        /* 手動調整新增貼紙的具體位置 */
         .p5 { top: 35%; left: 30%; width: 300px; transform: rotate(5deg); z-index: 2; } 
         .p6 { top: 15%; left: 20%; width: 150px; transform: rotate(-20deg); z-index: 3; }
         .p7 { bottom: 20%; right: 25%; width: 200px; transform: rotate(15deg); z-index: 3; }
+
+        /* --- 新增的預留位置 (p8-p15) --- */
+        .p8 { top: 70%; left: 5%; width: 220px; transform: rotate(-8deg); z-index: 2; }
+        .p9 { top: 5%; left: 45%; width: 180px; transform: rotate(10deg); z-index: 2; }
+        .p10 { bottom: 30%; left: 45%; width: 250px; transform: rotate(-5deg); z-index: 2; }
+        .p11 { top: 40%; right: 5%; width: 200px; transform: rotate(-15deg); z-index: 2; }
+        .p12 { top: 60%; right: 10%; width: 160px; transform: rotate(25deg); z-index: 2; }
+        .p13 { top: 25%; left: 5%; width: 140px; transform: rotate(12deg); z-index: 2; }
+        .p14 { bottom: 10%; left: 30%; width: 210px; transform: rotate(-20deg); z-index: 2; }
+        .p15 { top: 15%; right: 35%; width: 190px; transform: rotate(5deg); z-index: 2; }
 
         /* 3. 卡片容器 */
         .container {
@@ -112,7 +119,6 @@
             width: 380px; height: 530px;
             object-fit: cover;
             border: 10px solid white;
-            /* 移除黑白濾鏡，恢復大圖原色 */
             filter: contrast(110%); 
         }
 
@@ -155,6 +161,11 @@
     <img src="CORTIS logo Hybe Labels-Photoroom.png" class="sticker p5" alt="合照">
     <img src="ateez sticker-Photoroom.png" class="sticker p6" alt="手繪愛心">
     <img src="ateez sticker-Photoroom.png" class="sticker p7" alt="文字貼紙">
+
+    <img src="你的圖片1.png" class="sticker p8" alt="新增1">
+    <img src="你的圖片2.png" class="sticker p9" alt="新增2">
+    <img src="你的圖片3.png" class="sticker p10" alt="新增3">
+    <img src="你的圖片4.png" class="sticker p11" alt="新增4">
 </div>
 
 <div class="container" id="cardContainer"></div>
@@ -187,12 +198,11 @@
         const icon = document.createElement('div');
         icon.style.position = 'absolute';
         icon.style.color = 'white';
-        // 放大背景元素：現在範圍在 40px - 160px 之間
         icon.style.fontSize = Math.random() * 120 + 40 + 'px';
         icon.style.left = Math.random() * 100 + '%';
         icon.style.top = Math.random() * 100 + '%';
         icon.style.transform = `rotate(${Math.random() * 360}deg)`;
-        icon.style.opacity = Math.random() * 0.2; // 降低透明度避免遮擋
+        icon.style.opacity = Math.random() * 0.2;
         icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
         bgIcons.appendChild(icon);
     }
@@ -244,4 +254,4 @@
     }
 </script>
 </body>
-</html>
+</html> 
