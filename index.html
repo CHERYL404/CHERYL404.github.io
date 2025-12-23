@@ -38,12 +38,13 @@
             opacity: 0.6;
         }
 
-        .sticker {
-            position: absolute;
-            width: 280px;
-            filter: grayscale(100%) contrast(150%) drop-shadow(5px 5px 0px white);
-            transition: opacity 0.5s;
-        }
+        .detail-img {
+           width: 380px;
+           height: 530px;
+           object-fit: cover;
+           border: 10px solid white;
+    /* 完全刪除 filter 那一行，或只留一點點對比 */
+       }
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
         .s2 { bottom: 5%; left: 15%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 5%; transform: rotate(18deg); }
