@@ -101,11 +101,13 @@
             animation: glitch 0.3s infinite alternate; /* 微微的抖動感 */
         }
 
-        .detail-img {
-            width: 380px; height: 530px;
-            object-fit: cover;
-            border: 10px solid white;
-            filter: grayscale(100%) contrast(130%); /* 自動黑白化 */
+       .detail-img {
+           width: 380px; height: 530px;
+           object-fit: cover;
+           border: 10px solid white;
+    /* 刪掉 grayscale，只保留 contrast(對比度) 讓照片更立體，或全部刪掉 */
+           filter: contrast(110%); 
+
         }
 
         .detail-info {
