@@ -2,223 +2,247 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>夢幻馬卡龍偶像卡片</title>
     <style>
         :root {
             --pink: #FFD1DC;
             --blue: #B3E5FC;
-            --white: rgba(255, 255, 255, 0.6);
+            --white: rgba(255, 255, 255, 0.7);
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
+            margin: 0; padding: 0;
+            width: 100%; height: 100%;
             overflow: hidden;
             font-family: "Microsoft JhengHei", sans-serif;
-            /* 夢幻粉藍渲染背景 */
+            /* 1. 渲染背景 */
             background: linear-gradient(135deg, var(--pink), var(--blue));
             background-attachment: fixed;
         }
 
-        /* 背景愛心裝飾 */
+        /* 2. 背景手繪愛心圖層 */
         .bg-hearts {
-            position: absolute;
+            position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
+            z-index: 1;
             pointer-events: none;
         }
 
         .bg-heart {
             position: absolute;
-            background: white;
-            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
-            background-color: var(--white);
-            opacity: 0.5;
+            background-color: white;
+            /* 使用手繪感 SVG 路徑 */
+            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.1,20.9c-0.1,0.1-0.2,0.1-0.2,0c-0.3-0.2-0.6-0.5-0.9-0.7c-2.4-1.9-4.7-3.9-6.7-6.2c-1.5-1.7-2.4-3.5-2.3-5.8 c0-2.3,1.7-4.2,3.9-4.4c1.6-0.1,3,0.5,4.1,1.7c0.1,0.1,0.2,0.2,0.2,0.3c0.1-0.1,0.1-0.2,0.2-0.3c1.1-1.2,2.5-1.8,4.1-1.7 c2.2,0.2,3.9,2.1,3.9,4.4c0.1,2.3-0.8,4-2.3,5.8c-2,2.3-4.3,4.3-6.7,6.2C12.7,20.4,12.4,20.7,12.1,20.9z"/></svg>');
+            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.1,20.9c-0.1,0.1-0.2,0.1-0.2,0c-0.3-0.2-0.6-0.5-0.9-0.7c-2.4-1.9-4.7-3.9-6.7-6.2c-1.5-1.7-2.4-3.5-2.3-5.8 c0-2.3,1.7-4.2,3.9-4.4c1.6-0.1,3,0.5,4.1,1.7c0.1,0.1,0.2,0.2,0.2,0.3c0.1-0.1,0.1-0.2,0.2-0.3c1.1-1.2,2.5-1.8,4.1-1.7 c2.2,0.2,3.9,2.1,3.9,4.4c0.1,2.3-0.8,4-2.3,5.8c-2,2.3-4.3,4.3-6.7,6.2C12.7,20.4,12.4,20.7,12.1,20.9z"/></svg>');
+            opacity: 0.4;
         }
 
-        /* 卡片容器 */
+        /* 3. 背景剪貼簿貼紙圖層 */
+        .sticker-layer {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .sticker {
+            position: absolute;
+            width: 250px;
+            filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.15));
+            opacity: 0.7;
+            transition: opacity 0.5s;
+        }
+
+        .s1 { top: 5%; left: 3%; transform: rotate(-12deg); }
+        .s2 { bottom: 5%; left: 15%; transform: rotate(10deg); }
+        .s3 { top: 10%; right: 5%; transform: rotate(15deg); }
+        .s4 { bottom: 8%; right: 20%; transform: rotate(-8deg); }
+
+        /* 4. 卡片內容 */
         .container {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            gap: 20px;
+            gap: 25px;
             z-index: 10;
         }
 
         .card {
-            width: 200px;
-            height: 300px;
+            width: 180px; height: 280px;
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             cursor: pointer;
-            transition: all 0.5s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.4s ease;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
         }
 
-        .card:hover { transform: translateY(-10px); }
+        .card:hover { transform: translateY(-15px) rotate(2deg); }
 
-        /* 卡片背面 (Logo) */
-        .card-back {
-            text-align: center;
-            font-weight: bold;
-            color: #888;
+        .logo-box {
+            width: 80%; height: 80%;
+            border: 2px solid #f0f0f0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; color: #aaa; text-align: center;
         }
 
-        .logo-placeholder {
-            font-size: 1.5rem;
-            border: 2px dashed #ccc;
-            padding: 20px;
-        }
-
-        /* 詳情模式 */
-        .detail-view {
+        /* 5. 詳情模式 */
+        #detailOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            z-index: 100;
             display: none;
-            width: 80%;
-            max-width: 900px;
-            background: rgba(255, 255, 255, 0.8);
-            border-radius: 20px;
-            padding: 40px;
-            display: flex;
-            align-items: center;
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 20;
+            justify-content: center; align-items: center;
+        }
+
+        .detail-view {
+            width: 85%; max-width: 900px;
+            display: flex; align-items: center;
+            animation: fadeIn 0.8s ease;
         }
 
         .detail-img {
-            width: 300px;
-            height: 450px;
-            background: #eee;
-            border-radius: 10px;
+            width: 350px; height: 500px;
             object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            border: 10px solid white;
         }
 
         .detail-info {
             margin-left: 50px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 40px; border-radius: 20px;
             flex: 1;
         }
 
-        .detail-info h2 { font-size: 2.5rem; color: #555; margin-bottom: 20px; }
-        .detail-info p { font-size: 1.2rem; line-height: 1.8; color: #666; }
-
-        /* 愛心噴發動畫 */
+        /* 6. 愛心動畫 */
         .floating-heart {
-            position: fixed;
-            color: #FFB7C5;
-            font-size: 2rem;
-            pointer-events: none;
-            z-index: 100;
-            animation: floatUp 2s ease-out forwards;
+            position: fixed; color: #FFB7C5; font-size: 2.5rem;
+            z-index: 150; pointer-events: none;
+            animation: floatUp 2.5s ease-out forwards;
         }
 
         @keyframes floatUp {
             0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-500px) scale(1.5); opacity: 0; }
+            100% { transform: translateY(-600px) scale(2); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
         }
     </style>
 </head>
 <body>
 
 <div class="bg-hearts" id="bgHearts"></div>
+<div class="sticker-layer" id="stickerLayer">
+    <img src="wooyoung_sticker.png" class="sticker s1" alt="鄭友榮貼紙">
+    <img src="martin_sticker.png" class="sticker s2" alt="馬丁貼紙">
+    <img src="san_sticker.png" class="sticker s3" alt="崔傘貼紙">
+    <img src="robin_sticker.png" class="sticker s4" alt="趙雨凡貼紙">
+</div>
 
-<div class="container" id="cardContainer">
-    </div>
+<div class="container" id="cardContainer"></div>
 
-<div id="detailOverlay" style="display:none;" onclick="resetCards()">
+<div id="detailOverlay" onclick="resetCards()">
     <div class="detail-view">
-        <img id="idolImg" class="detail-img" src="" alt="Idol">
+        <img id="idolImg" class="detail-img" src="" alt="">
         <div class="detail-info">
-            <h2 id="idolName">名字</h2>
+            <h2 id="idolName" style="font-size: 3rem; margin-top:0;">名字</h2>
+            <hr border="0" height="1px" background="#eee">
             <p><strong>團名：</strong><span id="groupName"></span></p>
             <p><strong>粉絲愛稱：</strong><span id="nickName"></span></p>
             <p><strong>生日：</strong><span id="birth"></span></p>
             <p><strong>喜歡的東西：</strong><span id="likes"></span></p>
+            <p style="color: #bbb; font-size: 0.8rem; margin-top: 30px;">(點擊任意處回到列表)</p>
         </div>
     </div>
 </div>
 
 <script>
     const idols = [
-        { name: '鄭友榮', group: 'ATEEZ', nick: '小狐狸', birth: '11/26', likes: '香水、跳舞', logo: 'ATEEZ LOGO', img: 'https://via.placeholder.com/300x450?text=Jung+Wooyoung' },
-        { name: '馬丁', group: 'n.SSign', nick: '丁丁', birth: '未知', likes: '音樂', logo: 'n.SSign LOGO', img: 'https://via.placeholder.com/300x450?text=Martin' },
-        { name: '崔傘', group: 'ATEEZ', nick: '小山', birth: '07/10', likes: '玩偶', logo: 'ATEEZ LOGO', img: 'https://via.placeholder.com/300x450?text=Choi+San' },
-        { name: '趙雨凡', group: 'n.SSign', nick: '雨凡', birth: '未知', likes: '舞台', logo: 'n.SSign LOGO', img: 'https://via.placeholder.com/300x450?text=Robin' }
+        { name: '鄭友榮', group: 'ATEEZ', nick: '小狐狸', birth: '11/26', likes: '香水、跳舞', logo: 'ATEEZ', img: 'wooyoung_main.jpg' },
+        { name: '馬丁', group: 'n.SSign', nick: '丁丁', birth: '11/20', likes: '音樂、漢堡', logo: 'n.SSign', img: 'martin_main.jpg' },
+        { name: '崔傘', group: 'ATEEZ', nick: '小山', birth: '07/10', likes: '玩偶、運動', logo: 'ATEEZ', img: 'san_main.jpg' },
+        { name: '趙雨凡', group: 'n.SSign', nick: '雨凡', birth: '04/03', likes: '舞台、穿搭', logo: 'n.SSign', img: 'robin_main.jpg' }
     ];
 
-    const container = document.getElementById('cardContainer');
+    // 初始化手繪背景愛心
     const bgHearts = document.getElementById('bgHearts');
-
-    // 產生背景裝飾愛心
-    for (let i = 0; i < 20; i++) {
-        const heart = document.createElement('div');
-        heart.className = 'bg-heart';
-        let size = Math.random() * 50 + 20;
-        heart.style.width = size + 'px';
-        heart.style.height = size + 'px';
-        heart.style.left = Math.random() * 100 + '%';
-        heart.style.top = Math.random() * 100 + '%';
-        bgHearts.appendChild(heart);
+    for (let i = 0; i < 25; i++) {
+        const h = document.createElement('div');
+        h.className = 'bg-heart';
+        let size = Math.random() * 60 + 30;
+        h.style.width = size + 'px';
+        h.style.height = size + 'px';
+        h.style.left = Math.random() * 100 + '%';
+        h.style.top = Math.random() * 100 + '%';
+        h.style.transform = `rotate(${Math.random() * 360}deg)`;
+        bgHearts.appendChild(h);
     }
 
     // 初始化卡片
-    function init() {
-        container.innerHTML = '';
-        idols.forEach((idol, index) => {
-            const card = document.createElement('div');
-            card.className = 'card';
-            card.innerHTML = `<div class="card-back"><div class="logo-placeholder">${idol.logo}</div><br>${idol.name}</div>`;
-            card.onclick = () => showDetail(index);
-            container.appendChild(card);
-        });
-    }
+    const container = document.getElementById('cardContainer');
+    idols.forEach((idol, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="logo-box">
+                <div><strong>${idol.logo}</strong><br><small>LOGO</small></div>
+            </div>
+            <p style="font-weight:bold; color:#555;">${idol.name}</p>
+        `;
+        card.onclick = (e) => {
+            e.stopPropagation();
+            showDetail(index);
+        };
+        container.appendChild(card);
+    });
 
     function showDetail(index) {
-        const idol = idols[index];
-        // 1. 噴發愛心動畫
-        for (let i = 0; i < 15; i++) {
+        // 1. 隱藏其他東西
+        container.style.opacity = '0';
+        document.getElementById('stickerLayer').style.opacity = '0';
+
+        // 2. 愛心氣球動畫
+        for (let i = 0; i < 20; i++) {
             setTimeout(() => {
                 const h = document.createElement('div');
                 h.className = 'floating-heart';
-                h.innerHTML = '❤️';
-                h.style.left = (window.innerWidth / 2 + (Math.random() * 200 - 100)) + 'px';
-                h.style.top = '80%';
+                h.innerHTML = '💗';
+                h.style.left = (window.innerWidth / 2 + (Math.random() * 400 - 200)) + 'px';
+                h.style.bottom = '-50px';
                 document.body.appendChild(h);
-                setTimeout(() => h.remove(), 2000);
+                setTimeout(() => h.remove(), 2500);
             }, i * 100);
         }
 
-        // 2. 切換畫面
-        container.style.display = 'none';
-        document.getElementById('detailOverlay').style.display = 'block';
-        
-        // 3. 填充資料
-        document.getElementById('idolImg').src = idol.img;
-        document.getElementById('idolName').innerText = idol.name;
-        document.getElementById('groupName').innerText = idol.group;
-        document.getElementById('nickName').innerText = idol.nick;
-        document.getElementById('birth').innerText = idol.birth;
-        document.getElementById('likes').innerText = idol.likes;
+        // 3. 顯示詳情
+        const idol = idols[index];
+        setTimeout(() => {
+            document.getElementById('idolImg').src = idol.img;
+            document.getElementById('idolName').innerText = idol.name;
+            document.getElementById('groupName').innerText = idol.group;
+            document.getElementById('nickName').innerText = idol.nick;
+            document.getElementById('birth').innerText = idol.birth;
+            document.getElementById('likes').innerText = idol.likes;
+            document.getElementById('detailOverlay').style.display = 'flex';
+        }, 500);
     }
 
     function resetCards() {
         document.getElementById('detailOverlay').style.display = 'none';
-        container.style.display = 'flex';
+        container.style.opacity = '1';
+        document.getElementById('stickerLayer').style.opacity = '0.7';
     }
-
-    init();
 </script>
+
 </body>
 </html>
