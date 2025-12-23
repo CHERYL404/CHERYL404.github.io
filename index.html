@@ -3,150 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>夢幻馬卡龍偶像卡片</title>
+    <title>黑白龐克偶像卡片</title>
     <style>
         :root {
-            --pink: #FFD1DC;
-            --blue: #B3E5FC;
-            --white: rgba(255, 255, 255, 0.7);
+            --bg-black: #000000;
+            --bg-grey: #1a1a1a;
+            --text-white: #ffffff;
+            --punk-red: #ff0000; /* 保留一點點紅色當作點綴 */
         }
 
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
             overflow: hidden;
-            font-family: "Microsoft JhengHei", sans-serif;
-            /* 1. 渲染背景 */
-            background: linear-gradient(135deg, var(--pink), var(--blue));
-            background-attachment: fixed;
+            font-family: "Courier New", Courier, monospace;
+            /* 龐克漸層：深灰色中心向外變黑 */
+            background: radial-gradient(circle, #2c2c2c 0%, var(--bg-black) 100%);
         }
 
-        /* 2. 背景手繪愛心圖層 */
-        .bg-hearts {
+        /* 1. 龐克裝飾層：噴漆星星、閃電符號 */
+        .bg-punk-icons {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
             pointer-events: none;
         }
 
-        .bg-heart {
-            position: absolute;
-            background-color: white;
-            /* 使用手繪感 SVG 路徑 */
-            mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.1,20.9c-0.1,0.1-0.2,0.1-0.2,0c-0.3-0.2-0.6-0.5-0.9-0.7c-2.4-1.9-4.7-3.9-6.7-6.2c-1.5-1.7-2.4-3.5-2.3-5.8 c0-2.3,1.7-4.2,3.9-4.4c1.6-0.1,3,0.5,4.1,1.7c0.1,0.1,0.2,0.2,0.2,0.3c0.1-0.1,0.1-0.2,0.2-0.3c1.1-1.2,2.5-1.8,4.1-1.7 c2.2,0.2,3.9,2.1,3.9,4.4c0.1,2.3-0.8,4-2.3,5.8c-2,2.3-4.3,4.3-6.7,6.2C12.7,20.4,12.4,20.7,12.1,20.9z"/></svg>');
-            -webkit-mask-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12.1,20.9c-0.1,0.1-0.2,0.1-0.2,0c-0.3-0.2-0.6-0.5-0.9-0.7c-2.4-1.9-4.7-3.9-6.7-6.2c-1.5-1.7-2.4-3.5-2.3-5.8 c0-2.3,1.7-4.2,3.9-4.4c1.6-0.1,3,0.5,4.1,1.7c0.1,0.1,0.2,0.2,0.2,0.3c0.1-0.1,0.1-0.2,0.2-0.3c1.1-1.2,2.5-1.8,4.1-1.7 c2.2,0.2,3.9,2.1,3.9,4.4c0.1,2.3-0.8,4-2.3,5.8c-2,2.3-4.3,4.3-6.7,6.2C12.7,20.4,12.4,20.7,12.1,20.9z"/></svg>');
-            opacity: 0.4;
-        }
-
-        /* 3. 背景剪貼簿貼紙圖層 */
+        /* 2. 背景去背貼紙層 (保留你的需求) */
         .sticker-layer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2;
             pointer-events: none;
+            opacity: 0.6;
         }
 
         .sticker {
             position: absolute;
-            width: 250px;
-            filter: drop-shadow(8px 8px 15px rgba(0,0,0,0.15));
-            opacity: 0.7;
+            width: 280px;
+            filter: grayscale(100%) contrast(150%) drop-shadow(5px 5px 0px white);
             transition: opacity 0.5s;
         }
+        .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
+        .s2 { bottom: 5%; left: 15%; transform: rotate(12deg); }
+        .s3 { top: 10%; right: 5%; transform: rotate(18deg); }
+        .s4 { bottom: 8%; right: 20%; transform: rotate(-10deg); }
 
-        .s1 { top: 5%; left: 3%; transform: rotate(-12deg); }
-        .s2 { bottom: 5%; left: 15%; transform: rotate(10deg); }
-        .s3 { top: 10%; right: 5%; transform: rotate(15deg); }
-        .s4 { bottom: 8%; right: 20%; transform: rotate(-8deg); }
-
-        /* 4. 卡片內容 */
+        /* 3. 卡片容器與設計 */
         .container {
             position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            gap: 25px;
+            gap: 30px;
             z-index: 10;
         }
 
         .card {
-            width: 180px; height: 280px;
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            width: 190px; height: 290px;
+            background: #000;
+            border: 3px solid #fff; /* 粗白邊框 */
+            border-radius: 0; /* 龐克不要圓角 */
+            box-shadow: 8px 8px 0px #fff; /* 硬邊陰影 */
             cursor: pointer;
-            transition: transform 0.4s ease;
+            transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white;
+            padding: 10px;
         }
 
-        .card:hover { transform: translateY(-15px) rotate(2deg); }
+        .card:hover {
+            transform: translate(-10px, -10px);
+            box-shadow: 18px 18px 0px var(--punk-red);
+        }
 
         .logo-box {
-            width: 80%; height: 80%;
-            border: 2px solid #f0f0f0;
+            width: 90%; height: 70%;
+            border: 2px dashed #555;
             display: flex; align-items: center; justify-content: center;
-            font-size: 1.2rem; color: #aaa; text-align: center;
+            font-size: 1.5rem; letter-spacing: 2px;
         }
 
-        /* 5. 詳情模式 */
+        /* 4. 詳情畫面 (黑白剪貼風) */
         #detailOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.4);
-            backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.9);
             z-index: 100;
             display: none;
             justify-content: center; align-items: center;
         }
 
         .detail-view {
-            width: 85%; max-width: 900px;
+            width: 90%; max-width: 1000px;
             display: flex; align-items: center;
-            animation: fadeIn 0.8s ease;
+            animation: glitch 0.3s infinite alternate; /* 微微的抖動感 */
         }
 
         .detail-img {
-            width: 350px; height: 500px;
+            width: 380px; height: 530px;
             object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
             border: 10px solid white;
+            filter: grayscale(100%) contrast(130%); /* 自動黑白化 */
         }
 
         .detail-info {
             margin-left: 50px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 40px; border-radius: 20px;
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 0;
+            box-shadow: 15px 15px 0px var(--punk-red);
             flex: 1;
         }
 
-        /* 6. 愛心動畫 */
-        .floating-heart {
-            position: fixed; color: #FFB7C5; font-size: 2.5rem;
+        /* 5. 愛心氣球換成龐克愛心 */
+        .floating-punk {
+            position: fixed; color: white; font-size: 3rem;
             z-index: 150; pointer-events: none;
-            animation: floatUp 2.5s ease-out forwards;
+            animation: floatUp 1.5s ease-in forwards;
         }
 
         @keyframes floatUp {
-            0% { transform: translateY(0) scale(1); opacity: 1; }
-            100% { transform: translateY(-600px) scale(2); opacity: 0; }
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            100% { transform: translate(2px, -2px); }
         }
     </style>
 </head>
 <body>
 
-<div class="bg-hearts" id="bgHearts"></div>
+<div class="bg-punk-icons" id="bgIcons"></div>
+
 <div class="sticker-layer" id="stickerLayer">
-    <img src="ateez sticker.jpg" class="sticker s1" alt="鄭友榮貼紙">
-    <img src="martin_sticker.png" class="sticker s2" alt="馬丁貼紙">
-    <img src="ateez sticker.jpg" class="sticker s3" alt="崔傘貼紙">
-    <img src="robin_sticker.png" class="sticker s4" alt="趙雨凡貼紙">
+    <img src="wooyoung_sticker.png" class="sticker s1" alt="Idol1">
+    <img src="martin_sticker.png" class="sticker s2" alt="Idol2">
+    <img src="san_sticker.png" class="sticker s3" alt="Idol3">
+    <img src="robin_sticker.png" class="sticker s4" alt="Idol4">
 </div>
 
 <div class="container" id="cardContainer"></div>
@@ -155,76 +153,69 @@
     <div class="detail-view">
         <img id="idolImg" class="detail-img" src="" alt="">
         <div class="detail-info">
-            <h2 id="idolName" style="font-size: 3rem; margin-top:0;">名字</h2>
-            <hr border="0" height="1px" background="#eee">
-            <p><strong>團名：</strong><span id="groupName"></span></p>
-            <p><strong>粉絲愛稱：</strong><span id="nickName"></span></p>
-            <p><strong>生日：</strong><span id="birth"></span></p>
-            <p><strong>喜歡的東西：</strong><span id="likes"></span></p>
-            <p style="color: #bbb; font-size: 0.8rem; margin-top: 30px;">(點擊任意處回到列表)</p>
+            <h2 id="idolName" style="font-size: 3.5rem; margin: 0; text-decoration: underline;">NAME</h2>
+            <p><strong>GROUP:</strong> <span id="groupName"></span></p>
+            <p><strong>NICKNAME:</strong> <span id="nickName"></span></p>
+            <p><strong>BIRTHDAY:</strong> <span id="birth"></span></p>
+            <p><strong>LOVES:</strong> <span id="likes"></span></p>
+            <p style="margin-top: 50px; font-weight: bold; border: 2px solid black; display: inline-block; padding: 5px;">CLICK TO EXIT</p>
         </div>
     </div>
 </div>
 
 <script>
     const idols = [
-        { name: '鄭友榮', group: 'ATEEZ', nick: '小狐狸', birth: '11/26', likes: '香水、跳舞', logo: 'ATEEZ', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
-        { name: '馬丁', group: 'n.SSign', nick: '丁丁', birth: '11/20', likes: '音樂、漢堡', logo: 'n.SSign', img: 'MARTIN.jpg' },
-        { name: '崔傘', group: 'ATEEZ', nick: '小山', birth: '07/10', likes: '玩偶、運動', logo: 'ATEEZ', img: '下載.jpg' },
-        { name: '趙雨凡', group: 'n.SSign', nick: '雨凡', birth: '04/03', likes: '舞台、穿搭', logo: 'n.SSign', img: '#James #Cortis★.jpg' }
+        { name: '鄭友榮', group: 'ATEEZ', nick: 'WOOYOUNG', birth: '11/26', likes: 'Perfume, Dance', logo: 'ATZ', img: 'wooyoung_main.jpg' },
+        { name: '馬丁', group: 'n.SSign', nick: 'MARTIN', birth: '11/20', likes: 'Music, Burger', logo: 'n.SS', img: 'martin_main.jpg' },
+        { name: '崔傘', group: 'ATEEZ', nick: 'SAN', birth: '07/10', likes: 'Plushies, Gym', logo: 'ATZ', img: 'san_main.jpg' },
+        { name: '趙雨凡', group: 'n.SSign', nick: 'ROBIN', birth: '04/03', likes: 'Stage, Fashion', logo: 'n.SS', img: 'robin_main.jpg' }
     ];
 
-    // 初始化手繪背景愛心
-    const bgHearts = document.getElementById('bgHearts');
-    for (let i = 0; i < 25; i++) {
-        const h = document.createElement('div');
-        h.className = 'bg-heart';
-        let size = Math.random() * 60 + 30;
-        h.style.width = size + 'px';
-        h.style.height = size + 'px';
-        h.style.left = Math.random() * 100 + '%';
-        h.style.top = Math.random() * 100 + '%';
-        h.style.transform = `rotate(${Math.random() * 360}deg)`;
-        bgHearts.appendChild(h);
+    // 隨機產生龐克背景元素 (★ ✖ ⚡ ✚)
+    const bgIcons = document.getElementById('bgIcons');
+    const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
+    for (let i = 0; i < 40; i++) {
+        const icon = document.createElement('div');
+        icon.style.position = 'absolute';
+        icon.style.color = 'white';
+        icon.style.fontSize = Math.random() * 30 + 10 + 'px';
+        icon.style.left = Math.random() * 100 + '%';
+        icon.style.top = Math.random() * 100 + '%';
+        icon.style.transform = `rotate(${Math.random() * 360}deg)`;
+        icon.style.opacity = Math.random() * 0.4;
+        icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        bgIcons.appendChild(icon);
     }
 
-    // 初始化卡片
     const container = document.getElementById('cardContainer');
     idols.forEach((idol, index) => {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-            <div class="logo-box">
-                <div><strong>${idol.logo}</strong><br><small>LOGO</small></div>
-            </div>
-            <p style="font-weight:bold; color:#555;">${idol.name}</p>
+            <div class="logo-box"><strong>${idol.logo}</strong></div>
+            <p style="font-size: 1.2rem; margin-top: 15px;">${idol.name}</p>
         `;
-        card.onclick = (e) => {
-            e.stopPropagation();
-            showDetail(index);
-        };
+        card.onclick = (e) => { e.stopPropagation(); showDetail(index); };
         container.appendChild(card);
     });
 
     function showDetail(index) {
-        // 1. 隱藏其他東西
         container.style.opacity = '0';
         document.getElementById('stickerLayer').style.opacity = '0';
 
-        // 2. 愛心氣球動畫
-        for (let i = 0; i < 20; i++) {
+        // 噴發龐克符號動畫
+        for (let i = 0; i < 15; i++) {
             setTimeout(() => {
                 const h = document.createElement('div');
-                h.className = 'floating-heart';
-                h.innerHTML = '💗';
-                h.style.left = (window.innerWidth / 2 + (Math.random() * 400 - 200)) + 'px';
+                h.className = 'floating-punk';
+                h.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                h.style.left = (window.innerWidth / 2 + (Math.random() * 500 - 250)) + 'px';
                 h.style.bottom = '-50px';
                 document.body.appendChild(h);
-                setTimeout(() => h.remove(), 2500);
-            }, i * 100);
+                setTimeout(() => h.remove(), 1500);
+            }, i * 80);
         }
 
-        // 3. 顯示詳情
         const idol = idols[index];
         setTimeout(() => {
             document.getElementById('idolImg').src = idol.img;
@@ -234,15 +225,14 @@
             document.getElementById('birth').innerText = idol.birth;
             document.getElementById('likes').innerText = idol.likes;
             document.getElementById('detailOverlay').style.display = 'flex';
-        }, 500);
+        }, 400);
     }
 
     function resetCards() {
         document.getElementById('detailOverlay').style.display = 'none';
         container.style.opacity = '1';
-        document.getElementById('stickerLayer').style.opacity = '0.7';
+        document.getElementById('stickerLayer').style.opacity = '0.6';
     }
 </script>
-
 </body>
 </html>
