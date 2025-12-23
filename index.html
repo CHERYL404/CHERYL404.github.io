@@ -82,4 +82,192 @@
 
         .card {
             width: 190px; height: 290px;
-            background: #
+            background: #000;
+            border: 3px solid #fff;
+            border-radius: 0;
+            box-shadow: 8px 8px 0px #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            color: white;
+            padding: 10px;
+        }
+
+        .card:hover {
+            transform: translate(-10px, -10px);
+            box-shadow: 18px 18px 0px var(--punk-red);
+        }
+
+        .logo-box {
+            width: 90%; height: 70%;
+            border: 2px dashed #555;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem; letter-spacing: 2px;
+        }
+
+        /* 4. 詳情畫面 */
+        #detailOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 100;
+            display: none;
+            justify-content: center; align-items: center;
+        }
+
+        .detail-view {
+            width: 90%; max-width: 1000px;
+            display: flex; align-items: center;
+            animation: glitch 0.3s infinite alternate;
+        }
+
+        .detail-img {
+            width: 380px; height: 530px;
+            object-fit: cover;
+            border: 10px solid white;
+            filter: contrast(110%); 
+        }
+
+        .detail-info {
+            margin-left: 50px;
+            background: white;
+            color: black;
+            padding: 40px;
+            border-radius: 0;
+            box-shadow: 15px 15px 0px var(--punk-red);
+            flex: 1;
+        }
+
+        .floating-punk {
+            position: fixed; color: white; font-size: 3rem;
+            z-index: 150; pointer-events: none;
+            animation: floatUp 1.5s ease-in forwards;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-800px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            100% { transform: translate(2px, -2px); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="bg-punk-icons" id="bgIcons"></div>
+
+<div class="sticker-layer" id="stickerLayer">
+    <img src="cortis-Photoroom.png" class="sticker s1" alt="Idol1">
+    <img src="馬丁-Photoroom.png" class="sticker s2" alt="Idol2">
+    <img src="下載 (2)-Photoroom.png" class="sticker s3" alt="Idol3">
+    <img src="James-Photoroom.png" class="sticker s4" alt="Idol4">
+    <img src="CORTIS logo Hybe Labels-Photoroom.png" class="sticker p5" alt="合照">
+    <img src="ateez sticker-Photoroom.png" class="sticker p6" alt="手繪愛心">
+    <img src="ateez sticker-Photoroom.png" class="sticker p7" alt="文字貼紙">
+
+    <img src="下載 (1)-Photoroom.png" class="sticker p8" alt="新增1">
+    <img src="下載-Photoroom.png" class="sticker p9" alt="新增2">
+    <img src="➶ ꒰camera꒱ ‧₊˚✰-Photoroom (1).png" class="sticker p10" alt="新增3">
+
+    <img src="圖片網址.png" class="sticker p11" alt="新增11">
+    <img src="圖片網址.png" class="sticker p12" alt="新增12">
+    <img src="圖片網址.png" class="sticker p13" alt="新增13">
+    <img src="圖片網址.png" class="sticker p14" alt="新增14">
+    <img src="圖片網址.png" class="sticker p15" alt="新增15">
+    <img src="圖片網址.png" class="sticker p16" alt="新增16">
+    <img src="圖片網址.png" class="sticker p17" alt="新增17">
+    <img src="圖片網址.png" class="sticker p18" alt="新增18">
+    <img src="圖片網址.png" class="sticker p19" alt="新增19">
+    <img src="圖片網址.png" class="sticker p20" alt="新增20">
+</div>
+
+<div class="container" id="cardContainer"></div>
+
+<div id="detailOverlay" onclick="resetCards()">
+    <div class="detail-view">
+        <img id="idolImg" class="detail-img" src="" alt="">
+        <div class="detail-info">
+            <h2 id="idolName" style="font-size: 3.5rem; margin: 0; text-decoration: underline;">NAME</h2>
+            <p><strong>GROUP:</strong> <span id="groupName"></span></p>
+            <p><strong>NICKNAME:</strong> <span id="nickName"></span></p>
+            <p><strong>BIRTHDAY:</strong> <span id="birth"></span></p>
+            <p><strong>LOVES:</strong> <span id="likes"></span></p>
+            <p style="margin-top: 50px; font-weight: bold; border: 2px solid black; display: inline-block; padding: 5px;">CLICK TO EXIT</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    const idols = [
+        { name: 'Wooyoung', group: 'ATEEZ', nick: 'WOOYOUNG', birth: '11/26', likes: 'Perfume, Dance', logo: 'ATZ', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
+        { name: 'Martin', group: 'CORTIS', nick: 'MARTIN', birth: '11/20', likes: 'Music, Burger', logo: 'CORTIS', img: 'MARTIN.jpg' },
+        { name: 'Choisan', group: 'ATEEZ', nick: 'SAN', birth: '07/10', likes: 'Plushies, Gym', logo: 'ATZ', img: '下載.jpg' },
+        { name: 'James', group: 'CORTIS', nick: 'James', birth: '04/03', likes: 'Stage, Fashion', logo: 'CORTIS', img: 'James _ CORTIS on TikTok (12_8.25)' }
+    ];
+
+    const bgIcons = document.getElementById('bgIcons');
+    const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
+    for (let i = 0; i < 40; i++) {
+        const icon = document.createElement('div');
+        icon.style.position = 'absolute';
+        icon.style.color = 'white';
+        icon.style.fontSize = Math.random() * 120 + 40 + 'px';
+        icon.style.left = Math.random() * 100 + '%';
+        icon.style.top = Math.random() * 100 + '%';
+        icon.style.transform = `rotate(${Math.random() * 360}deg)`;
+        icon.style.opacity = Math.random() * 0.2;
+        icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        bgIcons.appendChild(icon);
+    }
+
+    const container = document.getElementById('cardContainer');
+    idols.forEach((idol, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="logo-box"><strong>${idol.logo}</strong></div>
+            <p style="font-size: 1.2rem; margin-top: 15px;">${idol.name}</p>
+        `;
+        card.onclick = (e) => { e.stopPropagation(); showDetail(index); };
+        container.appendChild(card);
+    });
+
+    function showDetail(index) {
+        container.style.opacity = '0';
+        document.getElementById('stickerLayer').style.opacity = '0';
+
+        for (let i = 0; i < 15; i++) {
+            setTimeout(() => {
+                const h = document.createElement('div');
+                h.className = 'floating-punk';
+                h.innerHTML = symbols[Math.floor(Math.random() * symbols.length)];
+                h.style.left = (window.innerWidth / 2 + (Math.random() * 500 - 250)) + 'px';
+                h.style.bottom = '-50px';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 1500);
+            }, i * 80);
+        }
+
+        const idol = idols[index];
+        setTimeout(() => {
+            document.getElementById('idolImg').src = idol.img;
+            document.getElementById('idolName').innerText = idol.name;
+            document.getElementById('groupName').innerText = idol.group;
+            document.getElementById('nickName').innerText = idol.nick;
+            document.getElementById('birth').innerText = idol.birth;
+            document.getElementById('likes').innerText = idol.likes;
+            document.getElementById('detailOverlay').style.display = 'flex';
+        }, 400);
+    }
+
+    function resetCards() {
+        document.getElementById('detailOverlay').style.display = 'none';
+        container.style.opacity = '1';
+        document.getElementById('stickerLayer').style.opacity = '1';
+    }
+</script>
+</body>
+</html>
