@@ -49,7 +49,24 @@
         .s2 { bottom: 5%; left: 15%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 5%; transform: rotate(18deg); }
         .s4 { bottom: 8%; right: 20%; transform: rotate(-10deg); }
+      /* 原本的 s1 ~ s4 */
 
+/* --- 這是你要補上的新設定 --- */
+       .p5 { top: 40%; left: 35%; width: 250px; /* 合照放中間偏左 */transform: rotate(5deg);  z-index: 2; } 
+       .p6 { top: 20%; left: 25%; width: 120px; /* 手繪愛心 */transform: rotate(-20deg); z-index: 3; }
+       .p7 { bottom: 25%; right: 30%; width: 150px; /* 文字貼紙 */transform: rotate(15deg); z-index: 3; }
+
+} 
+.p6 { 
+    top: 20%; left: 25%; width: 120px; /* 手繪愛心 */
+    transform: rotate(-20deg); 
+    z-index: 3; 
+}
+.p7 { 
+    bottom: 25%; right: 30%; width: 150px; /* 文字貼紙 */
+    transform: rotate(15deg); 
+    z-index: 3; 
+}
         /* 3. 卡片容器與設計 */
         .container {
             position: relative;
