@@ -9,7 +9,7 @@
             --bg-black: #000000;
             --bg-grey: #1a1a1a;
             --text-white: #ffffff;
-            --punk-red: #ff0000; /* 保留一點點紅色當作點綴 */
+            --punk-red: #ff0000;
         }
 
         body, html {
@@ -17,11 +17,10 @@
             width: 100%; height: 100%;
             overflow: hidden;
             font-family: "Courier New", Courier, monospace;
-            /* 龐克漸層：深灰色中心向外變黑 */
             background: radial-gradient(circle, #2c2c2c 0%, var(--bg-black) 100%);
         }
 
-        /* 1. 龐克裝飾層：噴漆星星、閃電符號 */
+        /* 1. 龐克裝飾層 */
         .bg-punk-icons {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -29,45 +28,35 @@
             pointer-events: none;
         }
 
-        /* 2. 背景去背貼紙層 (保留你的需求) */
+        /* 2. 背景去背貼紙層 */
         .sticker-layer {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2;
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 1; /* 調高不透明度讓色彩更鮮豔 */
         }
 
-        .detail-img {
-           width: 380px;
-           height: 530px;
-           object-fit: cover;
-           border: 10px solid white;
-    /* 完全刪除 filter 那一行，或只留一點點對比 */
-       }
+        .sticker {
+            position: absolute;
+            width: 280px;
+            /* 移除 grayscale，恢復原圖色調 */
+            filter: drop-shadow(8px 8px 0px rgba(255,255,255,0.8));
+            transition: opacity 0.5s;
+        }
+
+        /* 設定每一張去背圖的位置 */
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
-        .s2 { bottom: 5%; left: 15%; transform: rotate(12deg); }
+        .s2 { bottom: 5%; left: 10%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 5%; transform: rotate(18deg); }
-        .s4 { bottom: 8%; right: 20%; transform: rotate(-10deg); }
-      /* 原本的 s1 ~ s4 */
+        .s4 { bottom: 8%; right: 15%; transform: rotate(-10deg); }
+        
+        /* 手動調整新增貼紙的具體位置 */
+        .p5 { top: 35%; left: 30%; width: 300px; transform: rotate(5deg); z-index: 2; } 
+        .p6 { top: 15%; left: 20%; width: 150px; transform: rotate(-20deg); z-index: 3; }
+        .p7 { bottom: 20%; right: 25%; width: 200px; transform: rotate(15deg); z-index: 3; }
 
-/* --- 這是你要補上的新設定 --- */
-       .p5 { top: 40%; left: 35%; width: 250px; /* 合照放中間偏左 */transform: rotate(5deg);  z-index: 2; } 
-       .p6 { top: 20%; left: 25%; width: 120px; /* 手繪愛心 */transform: rotate(-20deg); z-index: 3; }
-       .p7 { bottom: 25%; right: 30%; width: 150px; /* 文字貼紙 */transform: rotate(15deg); z-index: 3; }
-
-} 
-.p6 { 
-    top: 20%; left: 25%; width: 120px; /* 手繪愛心 */
-    transform: rotate(-20deg); 
-    z-index: 3; 
-}
-.p7 { 
-    bottom: 25%; right: 30%; width: 150px; /* 文字貼紙 */
-    transform: rotate(15deg); 
-    z-index: 3; 
-}
-        /* 3. 卡片容器與設計 */
+        /* 3. 卡片容器 */
         .container {
             position: relative;
             display: flex;
@@ -81,9 +70,9 @@
         .card {
             width: 190px; height: 290px;
             background: #000;
-            border: 3px solid #fff; /* 粗白邊框 */
-            border-radius: 0; /* 龐克不要圓角 */
-            box-shadow: 8px 8px 0px #fff; /* 硬邊陰影 */
+            border: 3px solid #fff;
+            border-radius: 0;
+            box-shadow: 8px 8px 0px #fff;
             cursor: pointer;
             transition: all 0.2s;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -103,7 +92,7 @@
             font-size: 1.5rem; letter-spacing: 2px;
         }
 
-        /* 4. 詳情畫面 (黑白剪貼風) */
+        /* 4. 詳情畫面 */
         #detailOverlay {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -116,16 +105,15 @@
         .detail-view {
             width: 90%; max-width: 1000px;
             display: flex; align-items: center;
-            animation: glitch 0.3s infinite alternate; /* 微微的抖動感 */
+            animation: glitch 0.3s infinite alternate;
         }
 
-       .detail-img {
-           width: 380px; height: 530px;
-           object-fit: cover;
-           border: 10px solid white;
-    /* 刪掉 grayscale，只保留 contrast(對比度) 讓照片更立體，或全部刪掉 */
-           filter: contrast(110%); 
-
+        .detail-img {
+            width: 380px; height: 530px;
+            object-fit: cover;
+            border: 10px solid white;
+            /* 移除黑白濾鏡，恢復大圖原色 */
+            filter: contrast(110%); 
         }
 
         .detail-info {
@@ -138,7 +126,6 @@
             flex: 1;
         }
 
-        /* 5. 愛心氣球換成龐克愛心 */
         .floating-punk {
             position: fixed; color: white; font-size: 3rem;
             z-index: 150; pointer-events: none;
@@ -194,18 +181,18 @@
         { name: '趙雨凡', group: 'n.SSign', nick: 'ROBIN', birth: '04/03', likes: 'Stage, Fashion', logo: 'n.SS', img: '#James #Cortis★.jpg' }
     ];
 
-    // 隨機產生龐克背景元素 (★ ✖ ⚡ ✚)
     const bgIcons = document.getElementById('bgIcons');
     const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
     for (let i = 0; i < 40; i++) {
         const icon = document.createElement('div');
         icon.style.position = 'absolute';
         icon.style.color = 'white';
-        icon.style.fontSize = Math.random() * 80 + 10 + 'px';
+        // 放大背景元素：現在範圍在 40px - 160px 之間
+        icon.style.fontSize = Math.random() * 120 + 40 + 'px';
         icon.style.left = Math.random() * 100 + '%';
         icon.style.top = Math.random() * 100 + '%';
         icon.style.transform = `rotate(${Math.random() * 360}deg)`;
-        icon.style.opacity = Math.random() * 0.4;
+        icon.style.opacity = Math.random() * 0.2; // 降低透明度避免遮擋
         icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
         bgIcons.appendChild(icon);
     }
@@ -226,7 +213,6 @@
         container.style.opacity = '0';
         document.getElementById('stickerLayer').style.opacity = '0';
 
-        // 噴發龐克符號動畫
         for (let i = 0; i < 15; i++) {
             setTimeout(() => {
                 const h = document.createElement('div');
@@ -254,7 +240,7 @@
     function resetCards() {
         document.getElementById('detailOverlay').style.display = 'none';
         container.style.opacity = '1';
-        document.getElementById('stickerLayer').style.opacity = '0.6';
+        document.getElementById('stickerLayer').style.opacity = '1';
     }
 </script>
 </body>
