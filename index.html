@@ -15,7 +15,9 @@
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
-            overflow: hidden;
+            /* 手機版需要允許滾動，所以改為 auto */
+            overflow-x: hidden;
+            overflow-y: auto; 
             font-family: "Courier New", Courier, monospace;
             background: radial-gradient(circle, #2c2c2c 0%, var(--bg-black) 100%);
         }
@@ -45,7 +47,7 @@
             will-change: transform;
         }
 
-        /* 貼紙座標設定 */
+        /* 貼紙座標設定 - 保持原本的位置 */
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
         .s2 { bottom: 5%; left: 5%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 3%; transform: rotate(18deg); }
@@ -68,7 +70,10 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            flex-wrap: wrap; /* 重要：允許卡片換行排列 */
+            min-height: 100vh;
+            padding: 40px 20px;
+            box-sizing: border-box;
             gap: 30px;
             z-index: 10;
             transition: opacity 0.5s;
@@ -84,6 +89,7 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             color: white;
             padding: 10px;
+            flex-shrink: 0; /* 防止卡片被擠壓變形 */
         }
 
         .card:hover {
@@ -112,6 +118,7 @@
             z-index: 100;
             display: none;
             justify-content: center; align-items: center;
+            overflow-y: auto; /* 手機版文字多時可捲動 */
         }
 
         .detail-view {
@@ -124,6 +131,7 @@
             width: 380px; height: 530px;
             object-fit: cover;
             border: 10px solid white;
+            flex-shrink: 0;
         }
 
         .detail-info {
@@ -133,6 +141,43 @@
             padding: 40px;
             box-shadow: 15px 15px 0px var(--punk-red);
             flex: 1;
+        }
+
+        /* --- 手機版響應式調整 --- */
+        @media (max-width: 768px) {
+            .sticker {
+                width: 120px !important; /* 手機版強制縮小貼紙 */
+                opacity: 0.6; /* 稍微透明一點才不會擋到卡片 */
+            }
+            
+            /* 調整手機版卡片容器 */
+            .container {
+                align-items: flex-start; /* 讓卡片從上方開始排 */
+                padding-top: 80px;
+            }
+
+            /* 詳情視窗改為上下排列 */
+            .detail-view {
+                flex-direction: column;
+                padding: 20px 0;
+            }
+
+            .detail-img {
+                width: 280px;
+                height: 380px;
+            }
+
+            .detail-info {
+                margin-left: 0;
+                margin-top: 20px;
+                padding: 20px;
+                width: 280px;
+                box-sizing: border-box;
+            }
+            
+            .detail-info h2 {
+                font-size: 2rem !important;
+            }
         }
 
         .floating-punk {
@@ -191,7 +236,6 @@
 </div>
 
 <script>
-    // 這裡補回了原本空白的名字
     const idols = [
         { name: 'Wooyoung', group: 'ATEEZ', MBTI: 'ISTJ', birth: '11/26', trivia: 'kissing monster', logo: 'ATEEZ Logo.jpg', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
         { name: 'Martin', group: 'CORTIS', MBTI: 'INFP/ENFP', birth: '3/20', trivia: 'an expert in writing songs', logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
@@ -247,7 +291,7 @@
         const idol = idols[index];
         setTimeout(() => {
             document.getElementById('idolImg').src = idol.img;
-            document.getElementById('idolName').innerText = idol.name; // 這裡會把名字填入 NAME 標題
+            document.getElementById('idolName').innerText = idol.name;
             document.getElementById('groupName').innerText = idol.group;
             document.getElementById('mbtiDisplay').innerText = idol.MBTI;
             document.getElementById('birth').innerText = idol.birth;
