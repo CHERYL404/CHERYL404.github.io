@@ -45,7 +45,7 @@
             will-change: transform;
         }
 
-        /* 貼紙座標設定 (保持原樣) */
+        /* 貼紙座標設定 */
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
         .s2 { bottom: 5%; left: 5%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 3%; transform: rotate(18deg); }
@@ -191,77 +191,12 @@
 </div>
 
 <script>
+    // 這裡補回了原本空白的名字
     const idols = [
-        { name: '', group: 'ATEEZ', MBTI: 'ISTJ', birth: '11/26', trivia: 'kissing monster', logo: 'ATEEZ Logo.jpg', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
-        // 修正：補上 trivia 的結尾引號
-        { name: '', group: 'CORTIS', MBTI: 'INFP/ENFP', birth: '3/20', trivia: 'an expert in writing songs', logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
-        { name: '', group: 'ATEEZ', MBTI: 'INFP', birth: '07/10', trivia: 'black belt in taekwondo', logo: 'ATEEZ Logo.jpg', img: '下載.jpg' },
-        { name: '', group: 'CORTIS', MBTI: 'INTP', birth: '10/14', trivia: 'also did break dancing', logo: 'Cortis board cover.jpg', img: 'James _ CORTIS on TikTok (12_8.25)' }
+        { name: 'Wooyoung', group: 'ATEEZ', MBTI: 'ISTJ', birth: '11/26', trivia: 'kissing monster', logo: 'ATEEZ Logo.jpg', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
+        { name: 'Martin', group: 'CORTIS', MBTI: 'INFP/ENFP', birth: '3/20', trivia: 'an expert in writing songs', logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
+        { name: 'Choisan', group: 'ATEEZ', MBTI: 'INFP', birth: '07/10', trivia: 'black belt in taekwondo', logo: 'ATEEZ Logo.jpg', img: '下載.jpg' },
+        { name: 'James', group: 'CORTIS', MBTI: 'INTP', birth: '10/14', trivia: 'also did break dancing', logo: 'Cortis board cover.jpg', img: 'James _ CORTIS on TikTok (12_8.25)' }
     ];
 
-    const bgIcons = document.getElementById('bgIcons');
-    const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
-    for (let i = 0; i < 40; i++) {
-        const icon = document.createElement('div');
-        icon.style.position = 'absolute';
-        icon.style.color = 'white';
-        icon.style.fontSize = Math.random() * 100 + 20 + 'px';
-        icon.style.left = Math.random() * 100 + '%';
-        icon.style.top = Math.random() * 100 + '%';
-        icon.style.transform = `rotate(${Math.random() * 360}deg)`;
-        icon.style.opacity = Math.random() * 0.15;
-        icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        bgIcons.appendChild(icon);
-    }
-
-    const container = document.getElementById('cardContainer');
-    idols.forEach((idol, index) => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-            <div class="logo-box">
-                <img src="${idol.logo}" class="card-logo-img" alt="Logo">
-            </div>
-            <p style="font-size: 1.2rem; margin-top: 15px;">${idol.name}</p>
-        `;
-        card.onclick = (e) => { e.stopPropagation(); showDetail(index); };
-        container.appendChild(card);
-    });
-
-    function showDetail(index) {
-        container.style.opacity = '0';
-        document.getElementById('stickerLayer').style.opacity = '0';
-        
-        for (let i = 0; i < 12; i++) {
-            setTimeout(() => {
-                const h = document.createElement('div');
-                h.className = 'floating-punk';
-                h.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-                h.style.left = (window.innerWidth / 2 + (Math.random() * 600 - 300)) + 'px';
-                h.style.bottom = '-50px';
-                document.body.appendChild(h);
-                setTimeout(() => h.remove(), 1500);
-            }, i * 100);
-        }
-
-        const idol = idols[index];
-        setTimeout(() => {
-            document.getElementById('idolImg').src = idol.img;
-            document.getElementById('idolName').innerText = idol.name;
-            document.getElementById('groupName').innerText = idol.group;
-            document.getElementById('mbtiDisplay').innerText = idol.MBTI;
-            document.getElementById('birth').innerText = idol.birth;
-            // 修正：抓取 idol.trivia 並顯示在 triviaDisplay
-            document.getElementById('triviaDisplay').innerText = idol.trivia;
-            document.getElementById('detailOverlay').style.display = 'flex';
-        }, 400);
-    }
-
-    function resetCards() {
-        document.getElementById('detailOverlay').style.display = 'none';
-        container.style.opacity = '1';
-        document.getElementById('stickerLayer').style.opacity = '1';
-    }
-</script>
-</body>
-</html>
+    const bgIcons = document
