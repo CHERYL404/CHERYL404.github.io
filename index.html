@@ -45,7 +45,7 @@
             will-change: transform;
         }
 
-        /* 貼紙座標設定 */
+        /* 貼紙座標設定 (保持原樣) */
         .s1 { top: 5%; left: 3%; transform: rotate(-15deg); }
         .s2 { bottom: 5%; left: 5%; transform: rotate(12deg); }
         .s3 { top: 10%; right: 3%; transform: rotate(18deg); }
@@ -57,14 +57,10 @@
         .p9 { top: 5%; left: 45%; width: 260px; transform: rotate(10deg); z-index: 2; }
         .p10 { bottom: 1%; left: 45%; width: 300px; transform: rotate(-5deg); z-index: 2; }
         .p11 { top: 5%; right: 5%; width: 200px; transform: rotate(-15deg); z-index: 2; }
-        .p12 { top: 60%; right: 10%; width: 160px; transform: rotate(25deg); z-index: 2; }
-        .p13 { top: 20%; left: 1%; width: 140px; transform: rotate(12deg); z-index: 2; }
         .p14 { bottom: 3%; left: 30%; width: 170px; transform: rotate(-20deg); z-index: 2; }
-        .p15 { top: 15%; right: 45%; width: 190px; transform: rotate(5deg); z-index: 2; }
         .p17 { bottom: 35%; right: 1%; width: 180px; transform: rotate(-12deg); z-index: 2; }
         .p18 { top: 1%; right: 20%; width: 240px; transform: rotate(-5deg); z-index: 2; }
         .p19 { bottom: 1%; left: 55%; width: 200px; transform: rotate(15deg); z-index: 2; }
-        .p20 { top: 75%; right: 30%; width: 170px; transform: rotate(-20deg); z-index: 2; }
 
         /* 3. 卡片容器 */
         .container {
@@ -102,10 +98,10 @@
         }
 
         .card-logo-img {
-            width: 120%; /* 放大 Logo */
+            width: 120%; 
             height: 120%;
             object-fit: contain;
-            transform: translateY(-10px); /* 向上移動一點 */
+            transform: translateY(-10px);
         }
 
         /* 4. 詳情畫面設定 */
@@ -186,8 +182,9 @@
         <div class="detail-info">
             <h2 id="idolName" style="font-size: 3.5rem; margin: 0; text-decoration: underline;">NAME</h2>
             <p><strong>GROUP:</strong> <span id="groupName"></span></p>
-            <p><strong>MBTI:</strong> <span id="mbtiDisplay"></span></p> <p><strong>BIRTHDAY:</strong> <span id="birth"></span></p>
-            <p><strong>LOVES:</strong> <span id="likes"></span></p>
+            <p><strong>MBTI:</strong> <span id="mbtiDisplay"></span></p>
+            <p><strong>BIRTHDAY:</strong> <span id="birth"></span></p>
+            <p><strong>TRIVIA:</strong> <span id="triviaDisplay"></span></p>
             <p style="margin-top: 50px; font-weight: bold; border: 2px solid black; display: inline-block; padding: 5px;">CLICK TO EXIT</p>
         </div>
     </div>
@@ -196,7 +193,8 @@
 <script>
     const idols = [
         { name: 'Wooyoung', group: 'ATEEZ', MBTI: 'ISTJ', birth: '11/26', trivia: 'kissing monster', logo: 'ATEEZ Logo.jpg', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
-        { name: 'Martin', group: 'CORTIS', MBTI: 'INFP/ENFP', birth: '3/20', trivia: 'an expert in writing songs, logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
+        // 修正：補上 trivia 的結尾引號
+        { name: 'Martin', group: 'CORTIS', MBTI: 'INFP/ENFP', birth: '3/20', trivia: 'an expert in writing songs', logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
         { name: 'Choisan', group: 'ATEEZ', MBTI: 'INFP', birth: '07/10', trivia: 'black belt in taekwondo', logo: 'ATEEZ Logo.jpg', img: '下載.jpg' },
         { name: 'James', group: 'CORTIS', MBTI: 'INTP', birth: '10/14', trivia: 'also did break dancing', logo: 'Cortis board cover.jpg', img: 'James _ CORTIS on TikTok (12_8.25)' }
     ];
@@ -251,10 +249,10 @@
             document.getElementById('idolImg').src = idol.img;
             document.getElementById('idolName').innerText = idol.name;
             document.getElementById('groupName').innerText = idol.group;
-            // 關鍵修正：對應到資料裡的 MBTI 屬性
             document.getElementById('mbtiDisplay').innerText = idol.MBTI;
             document.getElementById('birth').innerText = idol.birth;
-            document.getElementById('likes').innerText = idol.likes;
+            // 修正：抓取 idol.trivia 並顯示在 triviaDisplay
+            document.getElementById('triviaDisplay').innerText = idol.trivia;
             document.getElementById('detailOverlay').style.display = 'flex';
         }, 400);
     }
