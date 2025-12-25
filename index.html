@@ -42,7 +42,7 @@
             position: absolute;
             width: 280px;
             filter: drop-shadow(8px 8px 0px rgba(255,255,255,0.8));
-            will-change: transform; /* 硬體加速，減少跑很慢的情況 */
+            will-change: transform;
         }
 
         /* 貼紙座標設定 */
@@ -96,17 +96,16 @@
         }
 
         .logo-box {
-            width: 85%; height: 65%;
-            border: 2px dashed #555;
+            width: 100%; height: 75%;
+            /* 移除 border: 2px dashed #555; */
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
 
         .card-logo-img {
-            width: 90%; height: 90%;
+            width: 95%; height: 95%;
             object-fit: contain;
-            /* 如果你的 Logo 是黑色的，下面這行會把它轉成白色以便看見 */
-            filter: invert(1); 
+            /* 移除 filter: invert(1); 以呈現原圖顏色 */
         }
 
         /* 4. 詳情畫面設定 */
@@ -196,7 +195,6 @@
 </div>
 
 <script>
-    // 資料陣列：logo 處填寫圖片路徑
     const idols = [
         { name: 'Wooyoung', group: 'ATEEZ', nick: 'WOOYOUNG', birth: '11/26', likes: 'Perfume, Dance', logo: 'ATZ_logo.png', img: 'D2D4901B-191E-4330-B47F-6F5FD6FF9A55.jpeg' },
         { name: 'Martin', group: 'CORTIS', nick: 'MARTIN', birth: '11/20', likes: 'Music, Burger', logo: 'Cortis board cover.jpg', img: 'MARTIN.jpg' },
@@ -204,7 +202,6 @@
         { name: 'James', group: 'CORTIS', nick: 'James', birth: '04/03', likes: 'Stage, Fashion', logo: 'Cortis board cover.jpg', img: 'James _ CORTIS on TikTok (12_8.25)' }
     ];
 
-    // 產生隨機背景符號
     const bgIcons = document.getElementById('bgIcons');
     const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
     for (let i = 0; i < 40; i++) {
@@ -220,7 +217,6 @@
         bgIcons.appendChild(icon);
     }
 
-    // 產生主卡片
     const container = document.getElementById('cardContainer');
     idols.forEach((idol, index) => {
         const card = document.createElement('div');
@@ -235,12 +231,10 @@
         container.appendChild(card);
     });
 
-    // 顯示詳情
     function showDetail(index) {
         container.style.opacity = '0';
         document.getElementById('stickerLayer').style.opacity = '0';
         
-        // 漂浮特效
         for (let i = 0; i < 12; i++) {
             setTimeout(() => {
                 const h = document.createElement('div');
@@ -265,7 +259,6 @@
         }, 400);
     }
 
-    // 回到主頁
     function resetCards() {
         document.getElementById('detailOverlay').style.display = 'none';
         container.style.opacity = '1';
