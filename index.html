@@ -199,4 +199,68 @@
         { name: 'James', group: 'CORTIS', MBTI: 'INTP', birth: '10/14', trivia: 'also did break dancing', logo: 'Cortis board cover.jpg', img: 'James _ CORTIS on TikTok (12_8.25)' }
     ];
 
-    const bgIcons = document
+    const bgIcons = document.getElementById('bgIcons');
+    const symbols = ['★', '✖', '⚡', '✚', '💀', 'PUNK'];
+    for (let i = 0; i < 40; i++) {
+        const icon = document.createElement('div');
+        icon.style.position = 'absolute';
+        icon.style.color = 'white';
+        icon.style.fontSize = Math.random() * 100 + 20 + 'px';
+        icon.style.left = Math.random() * 100 + '%';
+        icon.style.top = Math.random() * 100 + '%';
+        icon.style.transform = `rotate(${Math.random() * 360}deg)`;
+        icon.style.opacity = Math.random() * 0.15;
+        icon.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+        bgIcons.appendChild(icon);
+    }
+
+    const container = document.getElementById('cardContainer');
+    idols.forEach((idol, index) => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+            <div class="logo-box">
+                <img src="${idol.logo}" class="card-logo-img" alt="Logo">
+            </div>
+            <p style="font-size: 1.2rem; margin-top: 15px;">${idol.name}</p>
+        `;
+        card.onclick = (e) => { e.stopPropagation(); showDetail(index); };
+        container.appendChild(card);
+    });
+
+    function showDetail(index) {
+        container.style.opacity = '0';
+        document.getElementById('stickerLayer').style.opacity = '0';
+        
+        for (let i = 0; i < 12; i++) {
+            setTimeout(() => {
+                const h = document.createElement('div');
+                h.className = 'floating-punk';
+                h.innerText = symbols[Math.floor(Math.random() * symbols.length)];
+                h.style.left = (window.innerWidth / 2 + (Math.random() * 600 - 300)) + 'px';
+                h.style.bottom = '-50px';
+                document.body.appendChild(h);
+                setTimeout(() => h.remove(), 1500);
+            }, i * 100);
+        }
+
+        const idol = idols[index];
+        setTimeout(() => {
+            document.getElementById('idolImg').src = idol.img;
+            document.getElementById('idolName').innerText = idol.name; // 這裡會把名字填入 NAME 標題
+            document.getElementById('groupName').innerText = idol.group;
+            document.getElementById('mbtiDisplay').innerText = idol.MBTI;
+            document.getElementById('birth').innerText = idol.birth;
+            document.getElementById('triviaDisplay').innerText = idol.trivia;
+            document.getElementById('detailOverlay').style.display = 'flex';
+        }, 400);
+    }
+
+    function resetCards() {
+        document.getElementById('detailOverlay').style.display = 'none';
+        container.style.opacity = '1';
+        document.getElementById('stickerLayer').style.opacity = '1';
+    }
+</script>
+</body>
+</html>
